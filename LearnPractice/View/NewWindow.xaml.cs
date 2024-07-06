@@ -14,10 +14,11 @@ namespace LearnPractice.View
             InitializeComponent();
 
             var windowService = new WindowService();
-            DataContext = new MainViewModel(windowService);
+            var mainViewModel = new MainViewModel(windowService);
+            DataContext = mainViewModel;
 
-            Top = (SystemParameters.WorkArea.Height - Height) / 2 + 50;
-            Left = (SystemParameters.WorkArea.Width - Width) / 2 + 120;
+            Top = (SystemParameters.WorkArea.Height - Height) / 2 + 200;
+            Left = (SystemParameters.WorkArea.Width - Width) / 2 - 340;
         }
     }
 }

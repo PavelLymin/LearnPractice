@@ -9,24 +9,26 @@ using System.Text;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using LearnPractice.Services;
+using File = System.IO.File;
+using System.Globalization;
+using System.Windows.Markup;
 
 namespace LearnPractice.ViewModel
 {
     public class MainViewModel: INotifyPropertyChanged
     {
-        public ObservableCollection<MainModel> Tasks { get; set; }
+        private IWindowService _windowService;
 
-        private List<string> textTask = new List<string>();
+        public MainModel SelectedModel { get; set; }
 
-        private MainModel selectedModel;
-        public MainModel SelectedModel
+        private MainModel _mainModelItem;
+        public MainModel MainModelItem 
         {
-            get => selectedModel; 
-            
-            set
+            get => _mainModelItem;
+            set 
             {
-                selectedModel = value;
-                OnPropertyChanged(nameof(SelectedModel));
+                _mainModelItem = value;
+                OnPropertyChanged(nameof(MainModelItem));
             }
         }
 
@@ -41,11 +43,13 @@ namespace LearnPractice.ViewModel
             }
         }
 
+        public ObservableCollection<MainModel> Tasks { get; set; }
+
+        private List<string> textTask = new List<string>();
+
         public MainViewModel(IWindowService windowService)
         {
             _windowService = windowService;
-            OpenWindowCommand = new RelayCommand(() => OnOpenWindow());
-            CloseWindowCommand = new RelayCommand(() => OnCloseWindow());
             Tasks = new ObservableCollection<MainModel>();
             TaskItem = new MainModel();
             ListTasks();
@@ -76,7 +80,7 @@ namespace LearnPractice.ViewModel
                 text1 += $"{task.DateFinish}\n";
             }
 
-            File.WriteAllText(path, text1.Trim());
+            File.WriteAllText(path, text1);
         }
 
         public void ListTasks()
@@ -98,14 +102,15 @@ namespace LearnPractice.ViewModel
 
         public void AddTask()
         {
-            if (TaskItem.Status == "Завершена")
-                _windowService.ShowMessage("Not");
+            if (TaskItem.Status == "Завершена" || TaskItem.Status == "Выполняется" || TaskItem.Status == "Приостановлена")
+                _windowService.ShowMessage($"Вы не можете создать задачу с статусом: \"{TaskItem.Status}\".");
             else
             {
-                TaskItem.DateStart = DateTime.Now.ToString();
+                TaskItem.DateStart = DateTime.Now.ToString("dd.MM.yyyy");
                 Tasks.Add(TaskItem);
-                TaskItem = new MainModel();
                 UploadingToAFile();
+                TaskItem = null;
+                TaskItem = new MainModel();
             }
         }
 
@@ -114,39 +119,82 @@ namespace LearnPractice.ViewModel
             if (SelectedModel != null)
             {
                 Tasks.Remove(SelectedModel);
+                UploadingToAFile();
             }
-            UploadingToAFile();
+            else
+                _windowService.ShowMessage("Выберите задачу для удаления.");
         }
 
         public void Save()
         {
-            if (SelectedModel != null)
+            if (MainModelItem != null)
             {
-                OnPropertyChanged(nameof(SelectedModel));
+                if (SelectedModel.Status == "Создана" && MainModelItem.Status == "Завершена"
+                    || SelectedModel.Status == "Приостановлена" && MainModelItem.Status == "Завершена")
+                {
+                    _windowService.ShowMessage("Вы не можете изменить статус на \"Завершена\" пока задача не имеет статус \"Выполняется\"");
+                }
+                else
+                {
+                    SelectedModel.TaskName = MainModelItem.TaskName;
+                    SelectedModel.TaskDescription = MainModelItem.TaskDescription;
+                    SelectedModel.Status = MainModelItem.Status;
+                    SelectedModel.DateFinish = MainModelItem.DateFinish;
+                    SelectedModel.DateStart = MainModelItem.DateStart;
+                }
+
+                UploadingToAFile();
             }
         }
 
-        private IWindowService _windowService;
-        public ICommand OpenWindowCommand { get; set; }
-        public ICommand CloseWindowCommand { get; set; }
-
         private void OnOpenWindow()
         {
-            _windowService.OpenWindow();
+            if (SelectedModel != null)
+            {
+                MainModelItem = new MainModel();
+                MainModelItem.TaskName = SelectedModel.TaskName;
+                MainModelItem.TaskDescription = SelectedModel.TaskDescription;
+                MainModelItem.Status = SelectedModel.Status;
+                MainModelItem.DateFinish = SelectedModel.DateFinish;
+                MainModelItem.DateStart = SelectedModel.DateStart;
+                _windowService.OpenWindow(this);
+            }
+            else
+                _windowService.ShowMessage("Выберите задачу для редактирования.");
         }
 
-        private void OnCloseWindow()
+        private void OnOpenWindowAddTask() 
         {
-            _windowService.CloseWindow();
+            _windowService.OpenWindowAddTask(this);
         }
 
+        private void OnOpenWindowInformationTask()
+        {
+            if (SelectedModel != null)
+            {
+                MainModelItem = new MainModel();
+                MainModelItem.TaskName = SelectedModel.TaskName;
+                MainModelItem.TaskDescription = SelectedModel.TaskDescription;
+                MainModelItem.Status = SelectedModel.Status;
+                MainModelItem.DateFinish = SelectedModel.DateFinish;
+                MainModelItem.DateStart = SelectedModel.DateStart;
+                _windowService.OpenWindowInformation(this);
+            }
+            else
+                _windowService.ShowMessage("Выбирете задачу для просмотра информации");
+        }
+
+        private ICommand openWindowCommand;
+        private ICommand addTaskWindowCommand;
+        private ICommand openWindowInformationCommand;
         private ICommand addNewTaskButton;
-        public ICommand AddNewTaskButton => addNewTaskButton ?? (addNewTaskButton = new RelayCommand(AddTask));
-
         private ICommand removeTaskButton;
-        public ICommand RemoveTaskButton => removeTaskButton ?? (removeTaskButton = new RelayCommand(RemoveTask));
-
         private ICommand saveTask;
+        public ICommand OpenWindowCommand => openWindowCommand ?? (openWindowCommand = new RelayCommand(OnOpenWindow));
+        public ICommand AddTaskWindowCommand => addTaskWindowCommand ?? (addTaskWindowCommand = new RelayCommand(OnOpenWindowAddTask));
+        public ICommand OpenWindowInformationCommand => openWindowInformationCommand ?? (openWindowInformationCommand = new RelayCommand(OnOpenWindowInformationTask));
+        public ICommand AddNewTaskButton => addNewTaskButton ?? (addNewTaskButton = new RelayCommand(AddTask));
+        public ICommand RemoveTaskButton => removeTaskButton ?? (removeTaskButton = new RelayCommand(RemoveTask));
         public ICommand SaveTask => saveTask ?? (saveTask = new RelayCommand(Save));
 
         public event PropertyChangedEventHandler PropertyChanged;

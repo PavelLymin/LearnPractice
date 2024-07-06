@@ -15,6 +15,8 @@ namespace LearnPractice
 
             var windowService = new WindowService();
             DataContext = new MainViewModel(windowService);
+
+
         }
     }
 }

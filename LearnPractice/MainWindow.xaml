@@ -5,33 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LearnPractice"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800">
-    <Window.Resources>
-        <ResourceDictionary Source="Dictionary1.xaml" />
-    </Window.Resources>
-    <Grid>
-        <ListView Name="List" ItemsSource="{Binding Tasks}" SelectedItem="{Binding SelectedModel}" SelectionMode="Single" Margin="345,10,35,540">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="{DynamicResource TaskName}" DisplayMemberBinding="{Binding TaskName}"/>
-                    <GridViewColumn Header="{DynamicResource TaskDescriptionTitle}" DisplayMemberBinding="{Binding TaskDescription}"/>
-                    <GridViewColumn Header="{DynamicResource DateStartTitle}" DisplayMemberBinding="{Binding DateStart}"/>
-                    <GridViewColumn Header="{DynamicResource StatusTaskTitle}" DisplayMemberBinding="{Binding Status}"/>
-                    <GridViewColumn Header="{DynamicResource DateFinishTitle}" DisplayMemberBinding="{Binding DateFinish}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <StackPanel DataContext="{Binding SelectedModel}" Margin="345,300,10,296">
-            <TextBlock Text="Edit Task" Height="19" Width="280"/>
-            <TextBox Text="{Binding TaskName}" Height="30" Width="280"/>
-            <TextBox Text="{Binding TaskDescription}" Height="30" Width="280"/>
-            <TextBox Text="{Binding DateStart}" Height="30" Width="280"/>
-            <TextBox Text="{Binding Status}" Height="30" Width="280"/>
-            <TextBox Text="{Binding DateFinish}" Height="30" Width="280"/>
-        </StackPanel>
-
-        <Button Command="{Binding SaveTask}" Content="Редактировать" HorizontalAlignment="Left" Margin="115,285,0,0" VerticalAlignment="Top" Width="160" Height="28"/>
-        <Button Command="{Binding RemoveTaskButton}" Content="{DynamicResource RemoveTitle}" HorizontalAlignment="Left" Margin="115,342,0,0" VerticalAlignment="Top" Width="160" Height="28"/>
-        <Button Command="{Binding OpenWindowCommand}" Content="Добавить" HorizontalAlignment="Left" Margin="115,375,0,0" VerticalAlignment="Top" Width="160" Height="28"/>
+        Title="Просмотр задач" Height="650" Width="1000"
+        WindowStartupLocation="CenterScreen">
+    <Grid Background="#F5F5F5">
+        <Grid Background="White" Margin="25,40,25,15">
+            <Grid VerticalAlignment="Top" Margin="25,30,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="28"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Command="{Binding AddTaskWindowCommand}" Content="{DynamicResource AddTitle}" Width="100" Height="28" VerticalContentAlignment="Center" Padding="5" Margin="0" HorizontalAlignment="Left" BorderThickness="1" BorderBrush="#E0E0E0" Grid.Column="0" Grid.Row="0" Foreground="White" Background="#FF41417D"/>
+                <Button Command="{Binding OpenWindowCommand}" Content="{DynamicResource Save}" Width="100" Height="28" VerticalContentAlignment="Center" Padding="5" Margin="0" BorderThickness="1" BorderBrush="#E0E0E0" Grid.Column="2" Grid.Row="0" Foreground="White" Background="#FF41417D"/>
+                <Button Command="{Binding RemoveTaskButton}" Content="{DynamicResource RemoveTitle}" Width="100" Height="28" VerticalContentAlignment="Center" Padding="5" Margin="0" BorderThickness="1" BorderBrush="#E0E0E0" Grid.Column="4" Grid.Row="0" Foreground="White" Background="#FF41417D"/>
+                <Button Command="{Binding OpenWindowInformationCommand}" Content="Информация" Width="100" Height="28" VerticalContentAlignment="Center" Padding="5" Margin="0" BorderThickness="1" BorderBrush="#E0E0E0" Grid.Column="6" Grid.Row="0" Foreground="White" Background="#FF41417D"/>
+            </Grid>
+            <ListView Name="List" ItemsSource="{Binding Tasks}" SelectedItem="{Binding SelectedModel}" SelectionMode="Single" BorderBrush="#cdcdcd" Margin="25,70,25,25" Padding="0">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="ToolTip" Value="{Binding Path=TaskDescription}"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="{DynamicResource TaskName}" DisplayMemberBinding="{Binding TaskName}"/>
+                        <GridViewColumn Header="{DynamicResource DateStartTitle}" DisplayMemberBinding="{Binding DateStart}"/>
+                        <GridViewColumn Header="{DynamicResource StatusTaskTitle}" DisplayMemberBinding="{Binding Status}"/>
+                        <GridViewColumn Header="{DynamicResource DateFinishTitle}" DisplayMemberBinding="{Binding DateFinish}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
     </Grid>
 </Window>

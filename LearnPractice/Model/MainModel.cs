@@ -1,6 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
+using System.Windows.Markup;
 
 namespace LearnPractice.Model
 {
@@ -10,10 +13,7 @@ namespace LearnPractice.Model
 
         public string TaskName
         {
-            get
-            {
-                return _taskName;
-            }
+            get => _taskName;
             set
             {
                 _taskName = value;
@@ -25,10 +25,7 @@ namespace LearnPractice.Model
 
         public string TaskDescription
         {
-            get
-            {
-                return _taskDescription;
-            }
+            get => _taskDescription;
             set
             {
                 _taskDescription = value;
@@ -40,10 +37,7 @@ namespace LearnPractice.Model
 
         public string DateStart
         {
-            get
-            {
-                return _dateStart;
-            }
+            get => _dateStart;
             set
             {
                 _dateStart = value;
@@ -55,10 +49,7 @@ namespace LearnPractice.Model
 
         public string Status
         {
-            get
-            {
-                return _status;
-            }
+            get => _status;
             set
             {
                 _status = value;
@@ -72,7 +63,15 @@ namespace LearnPractice.Model
         {
             get
             {
-                return _dateFinish;
+                try
+                {
+                    _dateFinish = DateTime.Parse(_dateFinish, CultureInfo.InvariantCulture).ToString("dd.MM.yyyy");
+                    return _dateFinish;
+                }
+                catch
+                {
+                    return _dateFinish;
+                }
             }
             set
             {
