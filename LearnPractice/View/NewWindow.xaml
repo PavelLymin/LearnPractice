@@ -5,25 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LearnPractice.View"
         mc:Ignorable="d"
-        Title="{DynamicResource SaveTask}" Height="420" Width="450"
-    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+        Title="{DynamicResource SaveTask}" Height="420" Width="450">
     <Grid>
         <StackPanel DataContext="{Binding MainModelItem}" Margin="0,0,0,55">
             <TextBlock Text="{DynamicResource TaskName}" Height="19" Width="280" Margin="0,0,0,5"/>
-            <TextBox Text="{Binding TaskName}" Height="30" Width="280" Margin="0,0,0,10" BorderBrush="#b8b8b8" BorderThickness="1"/>
+            <TextBox Text="{Binding TaskName}" Height="30" Width="280" Margin="0,0,0,10" BorderBrush="#b8b8b8" BorderThickness="1" Padding="5,5,0,0"/>
             <TextBlock Text="{DynamicResource TaskDescriptionTitle}" Height="19" Width="280" Margin="0,0,0,5"/>
-            <TextBox Text="{Binding TaskDescription}" Height="30" Width="280" Margin="0,0,0,10" BorderBrush="#b8b8b8" BorderThickness="1"/>
+            <TextBox Text="{Binding TaskDescription}" Height="30" Width="280" Margin="0,0,0,10" BorderBrush="#b8b8b8" BorderThickness="1" Padding="5,5,0,0"/>
             <TextBlock Text="{DynamicResource DateStartTitle}" Height="19" Width="280" Margin="0,0,0,5"/>
-            <TextBox Text="{Binding DateStart}" Height="30" Width="280" Margin="0,0,0,10" BorderBrush="#b8b8b8" BorderThickness="1"/>
+            <TextBox Text="{Binding DateStart}" Height="30" Width="280" Margin="0,0,0,10" BorderBrush="#b8b8b8" BorderThickness="1" Padding="5,5,0,0"/>
             <TextBlock Text="{DynamicResource StatusTaskTitle}" Height="19" Width="280" Margin="0,0,0,5"/>
-            <ComboBox Text="{Binding Status}" Height="30" Width="280" Margin="0,0,0,10">
+            <ComboBox Text="{Binding Status}" Height="30" Width="280" Margin="0,0,0,10" Padding="5,5,0,0">
                 <ComboBoxItem Content="{DynamicResource CreatedTitle}"/>
                 <ComboBoxItem Content="{DynamicResource ProgressTitle}"/>
                 <ComboBoxItem Content="{DynamicResource SuspendedTitle}"/>
                 <ComboBoxItem Content="{DynamicResource CompletedTitle}"/>
             </ComboBox>
             <TextBlock Text="{DynamicResource DateFinishTitle}" Height="19" Width="280" Margin="0,0,0,5"/>
-            <DatePicker SelectedDate="{Binding DateFinish}" Height="30" Width="280" BorderBrush="#b8b8b8" BorderThickness="1"/>
+            <DatePicker SelectedDate="{Binding DateFinish}" Height="30" Width="280" BorderBrush="#b8b8b8" BorderThickness="1" Padding="5,5,0,0"/>
         </StackPanel>
         <Button Command="{Binding SaveTask}" Content="Редактировать" BorderThickness="1" BorderBrush="#E0E0E0" HorizontalAlignment="Center" Margin="0,0,0,20" VerticalAlignment="Bottom" Width="100" Height="28" Foreground="White" Background="#FF41417D"/>
     </Grid>

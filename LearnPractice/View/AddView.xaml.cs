@@ -24,12 +24,9 @@ namespace LearnPractice.View
         public AddView()
         {
             InitializeComponent();
-            var windowService = new WindowService();
-            var mainViewModel = new MainViewModel(windowService);
-            DataContext = mainViewModel;
 
-            Top = (SystemParameters.WorkArea.Height - Height) / 2 + 200;
-            Left = (SystemParameters.WorkArea.Width - Width) / 2 - 340;
+            Top = (SystemParameters.WorkArea.Height - Height) / 2 + 115;
+            Left = (SystemParameters.WorkArea.Width - Width) / 2 - 270;
         }
     }
 }

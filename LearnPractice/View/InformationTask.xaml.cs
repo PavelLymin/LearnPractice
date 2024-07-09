@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LearnPractice.Services;
+using LearnPractice.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,9 @@ namespace LearnPractice.View
         public InformationTask()
         {
             InitializeComponent();
+
+            Top = (SystemParameters.WorkArea.Height - Height) / 2 + 115;
+            Left = (SystemParameters.WorkArea.Width - Width) / 2 - 270;
         }
     }
 }

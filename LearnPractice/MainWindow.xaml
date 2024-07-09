@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:LearnPractice"
         mc:Ignorable="d"
         Title="Просмотр задач" Height="650" Width="1000"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Language="ru-RU">
     <Grid Background="#F5F5F5">
         <Grid Background="White" Margin="25,40,25,15">
             <Grid VerticalAlignment="Top" Margin="25,30,0,0">
@@ -27,7 +28,7 @@
                 <Button Command="{Binding RemoveTaskButton}" Content="{DynamicResource RemoveTitle}" Width="100" Height="28" VerticalContentAlignment="Center" Padding="5" Margin="0" BorderThickness="1" BorderBrush="#E0E0E0" Grid.Column="4" Grid.Row="0" Foreground="White" Background="#FF41417D"/>
                 <Button Command="{Binding OpenWindowInformationCommand}" Content="Информация" Width="100" Height="28" VerticalContentAlignment="Center" Padding="5" Margin="0" BorderThickness="1" BorderBrush="#E0E0E0" Grid.Column="6" Grid.Row="0" Foreground="White" Background="#FF41417D"/>
             </Grid>
-            <ListView Name="List" ItemsSource="{Binding Tasks}" SelectedItem="{Binding SelectedModel}" SelectionMode="Single" BorderBrush="#cdcdcd" Margin="25,70,25,25" Padding="0">
+            <ListView Language="ru-RU" Name="List" ItemsSource="{Binding Tasks}" SelectedItem="{Binding SelectedModel}" SelectionMode="Single" BorderBrush="#cdcdcd" Margin="25,70,25,25" Padding="0">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
                         <Setter Property="ToolTip" Value="{Binding Path=TaskDescription}"/>
@@ -38,7 +39,7 @@
                         <GridViewColumn Header="{DynamicResource TaskName}" DisplayMemberBinding="{Binding TaskName}"/>
                         <GridViewColumn Header="{DynamicResource DateStartTitle}" DisplayMemberBinding="{Binding DateStart}"/>
                         <GridViewColumn Header="{DynamicResource StatusTaskTitle}" DisplayMemberBinding="{Binding Status}"/>
-                        <GridViewColumn Header="{DynamicResource DateFinishTitle}" DisplayMemberBinding="{Binding DateFinish}"/>
+                        <GridViewColumn Header="{DynamicResource DateFinishTitle}" DisplayMemberBinding="{Binding DateFinish, StringFormat='dd.MM.yyyy'}"/>
                     </GridView>
                 </ListView.View>
             </ListView>

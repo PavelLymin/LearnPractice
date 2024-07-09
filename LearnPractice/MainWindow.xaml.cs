@@ -15,8 +15,8 @@ namespace LearnPractice
 
             var windowService = new WindowService();
             DataContext = new MainViewModel(windowService);
-
-
+            //MainViewModel принимает в качестве параметра объект класса WindowService,
+            //который реализует интерфейс IWindowService для многослойнности системы.
         }
     }
 }

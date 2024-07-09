@@ -4,23 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LearnPractice.View"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="{DynamicResource AddTitle}" Height="420" Width="450">
+        Title="{DynamicResource AddTitle}" Height="420" Width="450"
+        Language="ru-RU">
     <Grid>
         <StackPanel DataContext="{Binding TaskItem}" Margin="0,0,0,55">
             <TextBlock Text="{DynamicResource TaskName}" Height="19" Width="280" Margin="0,0,0,5"/>
-            <TextBox Text="{Binding TaskName}" Height="30" Width="280" Margin="0,0,0,10" BorderThickness="1" BorderBrush="#b8b8b8"/>
+            <TextBox Text="{Binding TaskName}" Height="30" Width="280" Margin="0,0,0,10" BorderThickness="1" BorderBrush="#b8b8b8" Padding="5,5,0,0"/>
             <TextBlock Text="{DynamicResource TaskDescriptionTitle}" Height="19" Width="280" Margin="0,0,0,5"/>
-            <TextBox Text="{Binding TaskDescription}" Height="30" Width="280" Margin="0,0,0,10" BorderThickness="1" BorderBrush="#b8b8b8"/>
+            <TextBox Text="{Binding TaskDescription}" Height="30" Width="280" Margin="0,0,0,10" BorderThickness="1" BorderBrush="#b8b8b8" Padding="5,5,0,0"/>
             <TextBlock Text="{DynamicResource StatusTaskTitle}" Height="19" Width="280" Margin="0,0,0,5"/>
-            <ComboBox Text="{Binding Status}" Height="30" Width="280" Margin="0,0,0,10">
-                <ComboBoxItem Content="{DynamicResource CreatedTitle}"/>
+            <ComboBox Text="{Binding Status}" Height="30" Width="280" Margin="0,0,0,10" Padding="5,5,0,0">
+                <ComboBoxItem Content="{DynamicResource CreatedTitle}" Padding="5,5,0,0"/>
                 <ComboBoxItem Content="{DynamicResource ProgressTitle}"/>
                 <ComboBoxItem Content="{DynamicResource SuspendedTitle}"/>
                 <ComboBoxItem Content="{DynamicResource CompletedTitle}"/>
             </ComboBox>
             <TextBlock Text="{DynamicResource DateFinishTitle}" Height="19" Width="280" Margin="0,0,0,5"/>
-            <DatePicker SelectedDate="{Binding DateFinish}" Height="30" Width="280" BorderBrush="#b8b8b8" BorderThickness="1"/>
+            <DatePicker SelectedDate="{Binding DateFinish}" DisplayDateStart="{x:Static sys:DateTime.Now}" Height="30" Width="280" BorderBrush="#b8b8b8" BorderThickness="1" Padding="5,5,0,0"/>
         </StackPanel>
         <Button Command="{Binding AddNewTaskButton}" Content="{DynamicResource AddTitle}" BorderThickness="1" BorderBrush="#E0E0E0" HorizontalAlignment="Center" Margin="0,0,0,20" VerticalAlignment="Bottom" Width="100" Height="28" Foreground="White" Background="#FF41417D"/>
     </Grid>

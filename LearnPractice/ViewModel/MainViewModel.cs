@@ -11,7 +11,7 @@ using CommunityToolkit.Mvvm.Input;
 using LearnPractice.Services;
 using File = System.IO.File;
 using System.Globalization;
-using System.Windows.Markup;
+using System.Text.RegularExpressions;
 
 namespace LearnPractice.ViewModel
 {
@@ -21,16 +21,6 @@ namespace LearnPractice.ViewModel
 
         public MainModel SelectedModel { get; set; }
 
-        private MainModel _mainModelItem;
-        public MainModel MainModelItem 
-        {
-            get => _mainModelItem;
-            set 
-            {
-                _mainModelItem = value;
-                OnPropertyChanged(nameof(MainModelItem));
-            }
-        }
 
         private MainModel _taskItem;
         public MainModel TaskItem
@@ -42,7 +32,6 @@ namespace LearnPractice.ViewModel
                 OnPropertyChanged(nameof(TaskItem));
             }
         }
-
         public ObservableCollection<MainModel> Tasks { get; set; }
 
         private List<string> textTask = new List<string>();
@@ -94,7 +83,7 @@ namespace LearnPractice.ViewModel
                     TaskDescription = ReadText()[0].Split('\n')[index++],
                     DateStart = ReadText()[0].Split('\n')[index++],
                     Status = ReadText()[0].Split('\n')[index++],
-                    DateFinish = ReadText()[0].Split('\n')[index++],
+                    DateFinish = DateTime.ParseExact(ReadText()[0].Split('\n')[index++], "dd.MM.yyyy h:mm:ss", CultureInfo.InvariantCulture),
                 };
                 Tasks.Add(taskItem);
             }
@@ -125,14 +114,22 @@ namespace LearnPractice.ViewModel
                 _windowService.ShowMessage("Выберите задачу для удаления.");
         }
 
+        private MainModel _mainModelItem;
+        public MainModel MainModelItem
+        {
+            get => _mainModelItem;
+            set { _mainModelItem = value; OnPropertyChanged(nameof(MainModelItem)); }
+        }
+
         public void Save()
         {
             if (MainModelItem != null)
             {
-                if (SelectedModel.Status == "Создана" && MainModelItem.Status == "Завершена"
-                    || SelectedModel.Status == "Приостановлена" && MainModelItem.Status == "Завершена")
+                if ((SelectedModel.Status == "Создана" || SelectedModel.Status == "Приостановлена") && MainModelItem.Status == "Завершена"
+                    || (SelectedModel.Status == "Приостановлена" && MainModelItem.Status == "Создана")
+                    || (SelectedModel.Status == "Завершена" && MainModelItem.Status != "Завершена"))
                 {
-                    _windowService.ShowMessage("Вы не можете изменить статус на \"Завершена\" пока задача не имеет статус \"Выполняется\"");
+                    _windowService.ShowMessage($"Вы не можете изменить статус на \"{MainModelItem.Status}\" после статуса \"{SelectedModel.Status}\"");
                 }
                 else
                 {
